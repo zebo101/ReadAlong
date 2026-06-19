@@ -237,7 +237,7 @@ const DEFAULT_TTS_VOICES: TtsVoice[] = [
 
 const DEFAULT_SETTINGS: ReadableHtmlSettings = {
 	interfaceLanguage: "zh",
-	exportFolder: "HTML Pages",
+	exportFolder: "Read Along",
 	stylePreset: "clean",
 	preserveFolderStructure: true,
 	addTitleFromFilename: true,
@@ -1602,7 +1602,7 @@ export default class ReadableHtmlExporterPlugin extends Plugin {
 	}
 
 	private getOutputPath(file: TFile, extension: "html" | "md"): string {
-		const exportFolder = this.cleanVaultPath(this.settings.exportFolder || "HTML Pages");
+		const exportFolder = this.cleanVaultPath(this.settings.exportFolder || "Read Along");
 		const sourceFolder =
 			this.settings.preserveFolderStructure && file.parent?.path ? file.parent.path : "";
 		const fileName = `${this.cleanFileName(file.basename)}.${extension}`;
@@ -1611,7 +1611,7 @@ export default class ReadableHtmlExporterPlugin extends Plugin {
 	}
 
 	private isInsideExportFolder(path: string): boolean {
-		const exportFolder = this.cleanVaultPath(this.settings.exportFolder || "HTML Pages");
+		const exportFolder = this.cleanVaultPath(this.settings.exportFolder || "Read Along");
 		return path === exportFolder || path.startsWith(`${exportFolder}/`);
 	}
 
@@ -2152,7 +2152,7 @@ class ReadableHtmlSettingTab extends PluginSettingTab {
 			.setDesc(this.plugin.t("settingExportFolderDesc"))
 			.addText((text) =>
 				text
-					.setPlaceholder("HTML Pages")
+					.setPlaceholder("Read Along")
 					.setValue(this.plugin.settings.exportFolder)
 					.onChange(async (value) => {
 						this.plugin.settings.exportFolder = value.trim() || DEFAULT_SETTINGS.exportFolder;
