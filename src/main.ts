@@ -1090,6 +1090,16 @@ export default class ReadableHtmlExporterPlugin extends Plugin {
 					console.error(`TTS failed for sentence ${i}:`, err);
 					if (!firstError) firstError = err instanceof Error ? err.message : String(err);
 					failedCount++;
+
+					// Circuit breaker: a systemic problem (proxy down, bad API key,
+					// network outage) makes every sentence fail identically. Rather
+					// than march through all N sentences before reporting it, bail out
+					// as soon as the first few consecutive attempts fail with nothing
+					// succeeding yet — turns a multi-minute wait into a few seconds.
+					const abortAfter = Math.min(5, sentences.length);
+					if (clips.length === 0 && failedCount >= abortAfter) {
+						throw new Error(`all segments failed (${firstError})`);
+					}
 				}
 
 				if (i < sentences.length - 1) {
