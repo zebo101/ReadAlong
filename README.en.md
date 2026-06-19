@@ -79,7 +79,7 @@ The settings also let you change the export folder, style preset, folder-structu
 
 The next export then bakes the per-sentence audio and synced highlighting into the page.
 
-> ⚠️ Volcengine's speech-synthesis API is a **mainland-China service that is reachable directly — no proxy needed**. If you keep a proxy running (VPN / Clash, etc.), make sure it routes `bytedance.com` directly, otherwise generation will fail.
+![TTS (语音合成) settings: enable Read Along, paste your API key, and pick a voice](assets/tts-settings.png)
 
 ## Privacy
 
