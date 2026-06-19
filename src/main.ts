@@ -2284,7 +2284,6 @@ class ReadableHtmlSettingTab extends PluginSettingTab {
 
 	private renderVoiceList(listEl: HTMLElement): void {
 		listEl.empty();
-		this.injectVoiceCss();
 		const voices = this.plugin.settings.ttsVoices;
 		const selectedType = this.plugin.settings.ttsVoiceType;
 		const selected = voices.find((v) => v.voiceType === selectedType);
@@ -2447,66 +2446,6 @@ class ReadableHtmlSettingTab extends PluginSettingTab {
 		}
 	}
 
-	private injectVoiceCss(): void {
-		if (document.getElementById("n2h-voice-css")) {
-			return;
-		}
-		const style = document.createElement("style");
-		style.id = "n2h-voice-css";
-		style.textContent = [
-			".n2h-voice-trigger{display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--background-modifier-border);border-radius:8px;cursor:pointer;}",
-			".n2h-voice-trigger:hover{background:var(--background-modifier-hover);}",
-			".n2h-voice-chevron{margin-left:auto;color:var(--text-muted);font-size:12px;}",
-			".n2h-voice-panel{margin-top:6px;border:1px solid var(--background-modifier-border);border-radius:8px;max-height:360px;display:flex;flex-direction:column;overflow:hidden;}",
-			".n2h-voice-scroll{flex:1;min-height:0;overflow-y:auto;}",
-			".n2h-voice-row{display:flex;align-items:center;gap:8px;padding:8px 10px;cursor:pointer;}",
-			".n2h-voice-row:hover{background:var(--background-modifier-hover);}",
-			".n2h-voice-avatar{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;color:#fff;font-size:12px;font-weight:600;flex-shrink:0;}",
-			".n2h-voice-meta{flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden;}",
-			".n2h-voice-name{font-size:14px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}",
-			".n2h-voice-sub{font-size:11px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}",
-			".n2h-voice-badge{padding:1px 6px;border-radius:8px;font-size:11px;background:var(--interactive-accent);color:var(--text-on-accent);}",
-			".n2h-voice-check{color:var(--interactive-accent);font-weight:700;}",
-			".n2h-voice-del{display:inline-flex;align-items:center;justify-content:center;background:none;border:none;box-shadow:none;cursor:pointer;color:var(--text-muted);padding:4px;border-radius:6px;opacity:0;}",
-			".n2h-voice-row:hover .n2h-voice-del{opacity:1;}",
-			".n2h-voice-del:hover{color:var(--text-error);background:var(--background-modifier-hover);}",
-			".n2h-voice-addrow{display:flex;gap:6px;align-items:center;padding:8px 10px;border-top:1px solid var(--background-modifier-border);}",
-			".n2h-voice-input{min-width:0;}",
-			".n2h-voice-footer{display:flex;justify-content:flex-end;padding:6px 10px;border-top:1px solid var(--background-modifier-border);}",
-			".n2h-test-status{display:none;align-items:center;gap:10px;margin:0 10px 10px;padding:10px 12px;border:1px solid var(--background-modifier-border);border-radius:8px;background:var(--background-secondary);}",
-			".n2h-test-status.is-visible{display:flex;}",
-			".n2h-test-media{flex-shrink:0;display:flex;align-items:center;justify-content:center;width:22px;height:22px;}",
-			".n2h-spinner{width:16px;height:16px;border:2px solid var(--background-modifier-border);border-top-color:var(--interactive-accent);border-radius:50%;animation:n2h-spin 0.7s linear infinite;}",
-			"@keyframes n2h-spin{to{transform:rotate(360deg);}}",
-			".n2h-test-ok{color:var(--color-green,#3ba55d);font-weight:700;font-size:15px;line-height:1;}",
-			".n2h-test-err{color:var(--text-error);font-weight:700;font-size:15px;line-height:1;}",
-			".n2h-test-content{display:flex;flex-direction:column;min-width:0;}",
-			".n2h-test-title{font-size:13px;font-weight:600;}",
-			".n2h-test-desc{font-size:11px;color:var(--text-muted);word-break:break-word;}"
-		].join("\n");
-		document.head.appendChild(style);
-	}
-}
-
-// Pulsing blue-dot + orange-ring loader, injected once. Used by the export progress
-// card and the in-settings voice test card.
-function injectLoaderCss(): void {
-	if (document.getElementById("n2h-loader-css")) {
-		return;
-	}
-	const style = document.createElement("style");
-	style.id = "n2h-loader-css";
-	style.textContent = [
-		// Light card with a soft, diffuse (gradient-like) shadow — override Obsidian's
-		// dark .notice chrome and its harder default shadow.
-		".notice.n2h-progress-card{background:var(--background-primary) !important;color:var(--text-normal) !important;" +
-			"border:1px solid var(--background-modifier-border);border-radius:12px;" +
-			"box-shadow:0 2px 6px rgba(0,0,0,0.018),0 8px 20px rgba(0,0,0,0.028) !important;" +
-			"padding:13px 15px;margin-top:18px !important;}",
-		// Loading animation: the bundled chat-d.gif (full animation, plays natively).
-		".n2h-loader-gif{width:40px;height:40px;flex-shrink:0;object-fit:contain;}"
-	].join("");
-	document.head.appendChild(style);
 }
 
 const CLEAN_HTML_CSS = `
