@@ -1,7 +1,7 @@
 {
 	"id": "read-along",
 	"name": "Read Along",
-	"version": "0.5.1",
+	"version": "0.5.2",
 	"minAppVersion": "1.5.0",
 	"description": "Export notes into clean, offline-readable pages, with optional Read Along — TTS narration plus synchronized sentence highlighting.",
 	"author": "拔插头艺术家",

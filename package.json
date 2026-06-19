@@ -1,6 +1,6 @@
 {
 	"name": "read-along",
-	"version": "0.5.1",
+	"version": "0.5.2",
 	"description": "Export notes into clean, offline-readable pages with optional Read Along (TTS narration + synchronized sentence highlighting).",
 	"main": "main.js",
 	"scripts": {
