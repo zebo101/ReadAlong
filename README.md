@@ -15,6 +15,8 @@
 
 ---
 
+> **In English:** Read Along is an Obsidian plugin that exports notes into clean, offline-readable HTML pages, with an optional "read along" mode — sentence-by-sentence TTS narration that highlights the current sentence as it plays. Full English documentation: **[README.en.md](README.en.md)**.
+
 ## 简介
 
 **语音伴读 (Read Along)** 是一个 Obsidian 插件，希望可以帮您更快的集中注意力**专注阅读**：把拥挤的 Markdown 笔记变成像文章、报告、小册子一样舒服的阅读页；在此之上再加「**语音伴读**」——调用 TTS 把全文**逐句朗读**，**读到哪句高亮哪句**，配一个内置悬浮播放器（播放 / 暂停 / 倍速 / 上一句 · 下一句 / 进度条），让长文可以**边听边读**。
