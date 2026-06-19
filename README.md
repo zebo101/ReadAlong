@@ -27,7 +27,7 @@
 
 ## 效果预览
 
-![Before Markdown to After HTML Page](assets/before-after-html-page.png)
+![Before Markdown to After Read Along](assets/before-after-read-along.png)
 
 ![目录和表格效果](assets/toc-table-effect.png)
 
