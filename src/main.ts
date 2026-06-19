@@ -2435,8 +2435,7 @@ class ReadableHtmlSettingTab extends PluginSettingTab {
 		el.addClass("is-visible");
 		const media = el.createDiv({ cls: "n2h-test-media" });
 		if (state === "loading") {
-			injectLoaderCss();
-			media.style.width = "auto";
+			media.addClass("is-loading");
 			media.createEl("img", { cls: "n2h-loader-gif", attr: { src: this.plugin.loaderImgSrc() } });
 		} else {
 			media.createSpan({
