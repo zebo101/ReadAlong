@@ -52,7 +52,7 @@
 2. 在你的 vault 中创建插件目录：
 
    ```text
-   .obsidian/plugins/notes-to-html-pages/
+   .obsidian/plugins/read-along/
    ```
 
 3. 把 `main.js` 与 `manifest.json` 放进该目录。

@@ -1,5 +1,5 @@
 {
-	"name": "notes-to-html-pages",
+	"name": "read-along",
 	"version": "0.5.0",
 	"description": "Export notes into clean, offline-readable pages with optional Read Along (TTS narration + synchronized sentence highlighting).",
 	"main": "main.js",

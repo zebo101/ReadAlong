@@ -31,7 +31,7 @@
 ## Directory Structure
 
 ```
-notes-to-html-pages/
+read-along/
 ├── src/
 │   └── main.ts          # 全部插件源码（唯一源文件）
 ├── assets/              # README 截图

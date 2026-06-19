@@ -52,7 +52,7 @@ Exported `.html` is fully self-contained (inline CSS, optional inline images and
 2. Create the plugin folder inside your vault:
 
    ```text
-   .obsidian/plugins/notes-to-html-pages/
+   .obsidian/plugins/read-along/
    ```
 
 3. Put `main.js` and `manifest.json` in that folder.
