@@ -1,7 +1,7 @@
 {
 	"name": "read-along",
-	"version": "0.5.3",
-	"description": "把笔记导出成清晰、可离线阅读的网页，并可选「语音伴读」逐句朗读、读到哪句高亮哪句。Export notes into clean, offline-readable pages with optional Read Along (TTS narration + synced sentence highlighting).",
+	"version": "0.5.4",
+	"description": "把笔记导出成清晰、可离线阅读的网页，并可选「语音伴读」——逐句朗读、读到哪句高亮哪句，长文也能听读。Export notes into clean, offline-readable pages with optional Read Along (TTS narration + synced sentence highlighting).",
 	"main": "main.js",
 	"scripts": {
 		"dev": "node esbuild.config.mjs",
