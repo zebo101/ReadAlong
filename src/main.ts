@@ -16,6 +16,10 @@ import {
 	requestUrl,
 	setIcon
 } from "obsidian";
+// Bundled at build time as a base64 data URI (esbuild "dataurl" loader), so the
+// loading animation ships inside main.js and works for store-installed users —
+// Obsidian only delivers main.js/manifest.json/styles.css, not extra asset files.
+import LOADER_GIF_URI from "../chat-d.gif";
 
 const VIEW_TYPE_READABLE_HTML = "notes-to-html-pages-html-view";
 
@@ -999,10 +1003,10 @@ export default class ReadableHtmlExporterPlugin extends Plugin {
 		return btoa(bin);
 	}
 
-	// Resource URL for the bundled loading GIF (sits next to main.js in the plugin folder).
+	// Inlined loading GIF (base64 data URI baked into main.js at build time). Self-contained
+	// so it renders regardless of how the plugin was installed.
 	loaderImgSrc(): string {
-		const dir = this.manifest.dir ?? "";
-		return this.app.vault.adapter.getResourcePath(normalizePath(dir + "/chat-d.gif"));
+		return LOADER_GIF_URI;
 	}
 
 	private generateUUID(): string {

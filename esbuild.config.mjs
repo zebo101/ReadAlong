@@ -35,6 +35,7 @@ const context = {
 	logLevel: "info",
 	sourcemap: prod ? false : "inline",
 	treeShaking: true,
+	loader: { ".gif": "dataurl" },
 	outfile: "main.js",
 	minify: prod
 };

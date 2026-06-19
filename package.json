@@ -1,6 +1,6 @@
 {
 	"name": "read-along",
-	"version": "0.5.5",
+	"version": "0.5.6",
 	"description": "把 Markdown 笔记变成「边听边读」逐句朗读、读到哪句高亮哪句的网页；支持语音伴读与听读。Export notes into clean, offline-readable pages with optional Read Along (TTS narration + synced sentence highlighting).",
 	"main": "main.js",
 	"scripts": {
