@@ -35,6 +35,7 @@
 .n2h-voice-input{min-width:0;}
 .n2h-voice-input-name{flex:1;}
 .n2h-voice-input-id{flex:2;}
+.n2h-voice-list{margin-bottom:2em;}
 .n2h-voice-footer{display:flex;justify-content:flex-end;padding:6px 10px;border-top:1px solid var(--background-modifier-border);}
 .n2h-test-status{display:none;align-items:center;gap:10px;margin:0 10px 10px;padding:10px 12px;border:1px solid var(--background-modifier-border);border-radius:8px;background:var(--background-secondary);}
 .n2h-test-status.is-visible{display:flex;}
