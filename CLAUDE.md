@@ -94,7 +94,8 @@ GitHub release tag 必须与 manifest.json 中的版本号一致，**不带 `v` 
 - **文件路径处理** — INVALID_FILE_NAME_CHARS、路径拼接逻辑，涉及跨平台兼容性
 
 ### 安全边界
-- 插件在用户本地 vault 内运行，不发送任何数据到外部服务
+- HTML 导出全程在本地运行，不上传任何笔记内容
+- **例外：语音伴读 (TTS)** — 开启后会用用户自己的 API Key 把笔记句子发送到火山引擎 (Volcengine) 语音合成接口，返回音频内嵌进导出页；关闭则无任何数据外发
 - 图片嵌入使用 data URI，需注意大文件场景下的内存占用
 
 ## Output Style Guidelines

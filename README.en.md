@@ -67,7 +67,7 @@ Exported `.html` is fully self-contained (inline CSS, optional inline images and
 语音伴读: 导出当前笔记为语音伴读页面
 ```
 
-You can also **right-click** a Markdown file or folder in the file explorer and choose the export command. Exported files are saved to `HTML Pages/` by default (configurable in settings).
+You can also **right-click** a Markdown file or folder in the file explorer and choose the export command. Exported files are saved to `Read Along/` by default (configurable in settings).
 
 The settings also let you change the export folder, style preset, folder-structure behavior, wiki-link conversion, image embedding, in-app HTML reading, launcher-note generation, and source-note back-link insertion.
 
