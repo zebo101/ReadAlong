@@ -1982,15 +1982,12 @@ class ReadableHtmlView extends FileView {
 				(this.containerEl as HTMLElement);
 			if (!leaf) return;
 			const { bg, border } = this.pageColors();
+			leaf.addClass("n2h-reader-leaf");
 			leaf.style.setProperty("background", bg, "important");
 			const header = leaf.querySelector<HTMLElement>(".view-header");
 			if (header) {
 				header.style.setProperty("background", bg, "important");
 				header.style.setProperty("border-bottom", `1px solid ${border}`, "important");
-				header.style.setProperty("box-shadow", "none", "important");
-				header.querySelectorAll<HTMLElement>(
-					".view-header-title-container, .view-header-nav-buttons, .view-actions"
-				).forEach((el) => el.style.setProperty("background", "transparent", "important"));
 			}
 		});
 	}
@@ -1998,13 +1995,13 @@ class ReadableHtmlView extends FileView {
 	async onUnloadFile(): Promise<void> {
 		const leaf = this.contentEl.closest<HTMLElement>(".workspace-leaf-content");
 		if (leaf) {
+			leaf.removeClass("n2h-reader-leaf");
 			leaf.style.removeProperty("background");
 		}
 		const header = leaf?.querySelector<HTMLElement>(".view-header");
 		if (header) {
 			header.style.removeProperty("background");
 			header.style.removeProperty("border-bottom");
-			header.style.removeProperty("box-shadow");
 		}
 		this.iframeEl = null;
 		this.contentEl.empty();
