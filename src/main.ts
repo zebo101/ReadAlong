@@ -439,7 +439,7 @@ export default class ReadableHtmlExporterPlugin extends Plugin {
 			settings.ttsVoices = data.ttsVoices
 				.filter(
 					(v): v is Record<string, unknown> =>
-						this.isRecord(v) && typeof v.voiceType === "string" && (v.voiceType as string).trim() !== ""
+						this.isRecord(v) && typeof v.voiceType === "string" && v.voiceType.trim() !== ""
 				)
 				.map((v) => ({
 					name: typeof v.name === "string" && v.name.trim() !== "" ? v.name : (v.voiceType as string),
@@ -913,7 +913,7 @@ export default class ReadableHtmlExporterPlugin extends Plugin {
 		// no audio extracted -> treat as error
 		let message = resp.text ? resp.text.slice(0, 300) : `HTTP ${resp.status}`;
 		try {
-			const j = JSON.parse(resp.text);
+			const j = JSON.parse(resp.text) as { header?: { message?: string }; message?: string };
 			message = j?.header?.message || j?.message || message;
 		} catch (e) {
 			// not a single JSON object; keep truncated text
@@ -1030,7 +1030,7 @@ export default class ReadableHtmlExporterPlugin extends Plugin {
 		const root = progress.noticeEl;
 		root.empty();
 		// Style the actual .notice toast (the dark chrome lives there, not on noticeEl).
-		const card = (root.closest(".notice") as HTMLElement | null) || root;
+		const card = root.closest<HTMLElement>(".notice") || root;
 		card.addClass("n2h-progress-card");
 		const head = root.createDiv({ cls: "n2h-progress-head" });
 		head.createEl("img", { cls: "n2h-loader-gif", attr: { src: this.loaderImgSrc() } });
@@ -1108,7 +1108,7 @@ export default class ReadableHtmlExporterPlugin extends Plugin {
 	}
 
 	private sleep(ms: number): Promise<void> {
-		return new Promise((resolve) => setTimeout(resolve, ms));
+		return new Promise((resolve) => window.setTimeout(resolve, ms));
 	}
 
 	private getStylePreset(): HtmlStylePreset {
@@ -1899,7 +1899,7 @@ class ReadableHtmlView extends FileView {
 		// Watch document.body's class (theme-dark <-> theme-light) directly: it flips exactly
 		// when the theme is applied, unlike css-change which can fire before the class swaps.
 		this.themeObserver = new MutationObserver(() => this.syncTheme());
-		this.themeObserver.observe(document.body, { attributes: true, attributeFilter: ["class"] });
+		this.themeObserver.observe(activeDocument.body, { attributes: true, attributeFilter: ["class"] });
 		this.register(() => {
 			this.themeObserver?.disconnect();
 			this.themeObserver = null;
@@ -1936,7 +1936,7 @@ class ReadableHtmlView extends FileView {
 	private lastDark: boolean | null = null;
 
 	private isDark(): boolean {
-		return document.body.classList.contains("theme-dark");
+		return activeDocument.body.classList.contains("theme-dark");
 	}
 
 	// Tag the page's <html> with theme-dark / theme-light so CLEAN_HTML_CSS resolves the
@@ -1979,7 +1979,7 @@ class ReadableHtmlView extends FileView {
 		window.requestAnimationFrame(() => {
 			const leaf =
 				this.contentEl.closest<HTMLElement>(".workspace-leaf-content") ||
-				(this.containerEl as HTMLElement);
+				this.containerEl;
 			if (!leaf) return;
 			const { bg, border } = this.pageColors();
 			leaf.addClass("n2h-reader-leaf");
@@ -2313,21 +2313,25 @@ class ReadableHtmlSettingTab extends PluginSettingTab {
 				attr: { "aria-label": this.plugin.t("ttsVoiceDelete"), title: this.plugin.t("ttsVoiceDelete") }
 			});
 			setIcon(del, "trash-2");
-			del.addEventListener("click", async (e) => {
-				e.stopPropagation();
-				this.plugin.settings.ttsVoices.splice(index, 1);
-				if (voice.voiceType === this.plugin.settings.ttsVoiceType) {
-					this.plugin.settings.ttsVoiceType = this.plugin.settings.ttsVoices[0]?.voiceType || "";
-				}
-				await this.plugin.saveSettings();
-				this.renderVoiceList(listEl);
+			del.addEventListener("click", (e) => {
+				void (async () => {
+					e.stopPropagation();
+					this.plugin.settings.ttsVoices.splice(index, 1);
+					if (voice.voiceType === this.plugin.settings.ttsVoiceType) {
+						this.plugin.settings.ttsVoiceType = this.plugin.settings.ttsVoices[0]?.voiceType || "";
+					}
+					await this.plugin.saveSettings();
+					this.renderVoiceList(listEl);
+				})();
 			});
 
-			row.addEventListener("click", async () => {
-				this.plugin.settings.ttsVoiceType = voice.voiceType;
-				this.voicePanelOpen = false;
-				await this.plugin.saveSettings();
-				this.renderVoiceList(listEl);
+			row.addEventListener("click", () => {
+				void (async () => {
+					this.plugin.settings.ttsVoiceType = voice.voiceType;
+					this.voicePanelOpen = false;
+					await this.plugin.saveSettings();
+					this.renderVoiceList(listEl);
+				})();
 			});
 		});
 
@@ -2347,55 +2351,61 @@ class ReadableHtmlSettingTab extends PluginSettingTab {
 		// Inline status card for the test action (spinner → result), in place of a toast.
 		const testStatus = panel.createDiv({ cls: "n2h-test-status" });
 
-		testBtn.addEventListener("click", async () => {
-			const vt = (idInput.value.trim() || this.plugin.settings.ttsVoiceType || "").trim();
-			const voice = this.plugin.settings.ttsVoices.find((v) => v.voiceType === vt);
-			const sub = vt ? (voice && voice.name ? voice.name + "  ·  " + vt : vt) : "";
-			this.renderTestStatus(testStatus, "loading", this.plugin.t("ttsVoiceTesting"), sub);
-			testBtn.setAttr("disabled", "true");
-			try {
-				const bytes = await this.plugin.synthesizeTestSample(idInput.value.trim());
-				const buf = new Uint8Array(bytes.length);
-				buf.set(bytes);
-				const url = URL.createObjectURL(new Blob([buf], { type: "audio/mp3" }));
-				const audio = new Audio(url);
-				audio.addEventListener("ended", () => URL.revokeObjectURL(url));
-				await audio.play();
-				this.renderTestStatus(testStatus, "ok", this.plugin.t("ttsVoiceTestOk"), sub);
-			} catch (err) {
-				const msg = err instanceof Error ? err.message : String(err);
-				this.renderTestStatus(testStatus, "error", this.plugin.t("ttsVoiceTestFailTitle"), msg);
-			} finally {
-				testBtn.removeAttribute("disabled");
-			}
+		testBtn.addEventListener("click", () => {
+			void (async () => {
+				const vt = (idInput.value.trim() || this.plugin.settings.ttsVoiceType || "").trim();
+				const voice = this.plugin.settings.ttsVoices.find((v) => v.voiceType === vt);
+				const sub = vt ? (voice && voice.name ? voice.name + "  ·  " + vt : vt) : "";
+				this.renderTestStatus(testStatus, "loading", this.plugin.t("ttsVoiceTesting"), sub);
+				testBtn.setAttr("disabled", "true");
+				try {
+					const bytes = await this.plugin.synthesizeTestSample(idInput.value.trim());
+					const buf = new Uint8Array(bytes.length);
+					buf.set(bytes);
+					const url = URL.createObjectURL(new Blob([buf], { type: "audio/mp3" }));
+					const audio = new Audio(url);
+					audio.addEventListener("ended", () => URL.revokeObjectURL(url));
+					await audio.play();
+					this.renderTestStatus(testStatus, "ok", this.plugin.t("ttsVoiceTestOk"), sub);
+				} catch (err) {
+					const msg = err instanceof Error ? err.message : String(err);
+					this.renderTestStatus(testStatus, "error", this.plugin.t("ttsVoiceTestFailTitle"), msg);
+				} finally {
+					testBtn.removeAttribute("disabled");
+				}
+			})();
 		});
-		addBtn.addEventListener("click", async () => {
-			const newId = idInput.value.trim();
-			const newName = nameInput.value.trim();
-			if (!newId) {
-				new Notice(this.plugin.t("ttsVoiceAddNeedId"));
-				return;
-			}
-			if (this.plugin.settings.ttsVoices.some((v) => v.voiceType === newId)) {
-				new Notice(this.plugin.t("ttsVoiceAddDup"));
-				return;
-			}
-			this.plugin.settings.ttsVoices.push({ name: newName || newId, voiceType: newId, hue: this.hueFor(newId) });
-			this.plugin.settings.ttsVoiceType = newId;
-			await this.plugin.saveSettings();
-			this.renderVoiceList(listEl);
+		addBtn.addEventListener("click", () => {
+			void (async () => {
+				const newId = idInput.value.trim();
+				const newName = nameInput.value.trim();
+				if (!newId) {
+					new Notice(this.plugin.t("ttsVoiceAddNeedId"));
+					return;
+				}
+				if (this.plugin.settings.ttsVoices.some((v) => v.voiceType === newId)) {
+					new Notice(this.plugin.t("ttsVoiceAddDup"));
+					return;
+				}
+				this.plugin.settings.ttsVoices.push({ name: newName || newId, voiceType: newId, hue: this.hueFor(newId) });
+				this.plugin.settings.ttsVoiceType = newId;
+				await this.plugin.saveSettings();
+				this.renderVoiceList(listEl);
+			})();
 		});
 
 		// Restore the preset voices.
 		const footer = panel.createDiv({ cls: "n2h-voice-footer" });
 		const restoreBtn = footer.createEl("button", { text: this.plugin.t("ttsVoiceRestore") });
-		restoreBtn.addEventListener("click", async () => {
-			const existing = new Set(this.plugin.settings.ttsVoices.map((v) => v.voiceType));
-			for (const v of DEFAULT_TTS_VOICES) {
-				if (!existing.has(v.voiceType)) this.plugin.settings.ttsVoices.push({ ...v });
-			}
-			await this.plugin.saveSettings();
-			this.renderVoiceList(listEl);
+		restoreBtn.addEventListener("click", () => {
+			void (async () => {
+				const existing = new Set(this.plugin.settings.ttsVoices.map((v) => v.voiceType));
+				for (const v of DEFAULT_TTS_VOICES) {
+					if (!existing.has(v.voiceType)) this.plugin.settings.ttsVoices.push({ ...v });
+				}
+				await this.plugin.saveSettings();
+				this.renderVoiceList(listEl);
+			})();
 		});
 	}
 
