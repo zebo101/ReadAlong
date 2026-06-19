@@ -4,7 +4,7 @@
 
 **中文** · [English](README.en.md)
 
-把 Markdown 笔记变成「边听边读」——逐句朗读、读到哪句高亮哪句的网页。
+把 Markdown 笔记变成「边听边读」逐句朗读、读到哪句高亮哪句的网页。
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Obsidian](https://img.shields.io/badge/Obsidian-1.5.0%2B-7c3aed.svg)
