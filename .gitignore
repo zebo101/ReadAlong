@@ -1,0 +1,11 @@
+node_modules/
+main.js
+*.map
+
+# Local secrets & tooling — never publish
+data.json
+.claude/
+docs/
+.DS_Store
+Thumbs.db
+*.log
