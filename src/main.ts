@@ -2272,8 +2272,7 @@ class ReadableHtmlSettingTab extends PluginSettingTab {
 				});
 
 			new Setting(containerEl).setName(this.plugin.t("settingTtsVoiceLibraryName")).setHeading();
-			const voiceListEl = containerEl.createDiv();
-			voiceListEl.style.marginBottom = "2em";
+			const voiceListEl = containerEl.createDiv({ cls: "n2h-voice-list" });
 			this.renderVoiceList(voiceListEl);
 		}
 	}
@@ -2339,15 +2338,13 @@ class ReadableHtmlSettingTab extends PluginSettingTab {
 		// Add a custom voice.
 		const addRow = panel.createDiv({ cls: "n2h-voice-addrow" });
 		const nameInput = addRow.createEl("input", {
-			cls: "n2h-voice-input",
+			cls: "n2h-voice-input n2h-voice-input-name",
 			attr: { type: "text", placeholder: this.plugin.t("ttsVoiceAddNamePlaceholder") }
 		});
-		nameInput.style.flex = "1";
 		const idInput = addRow.createEl("input", {
-			cls: "n2h-voice-input",
+			cls: "n2h-voice-input n2h-voice-input-id",
 			attr: { type: "text", placeholder: "voice_type" }
 		});
-		idInput.style.flex = "2";
 		const testBtn = addRow.createEl("button", { text: this.plugin.t("ttsVoiceTest") });
 		const addBtn = addRow.createEl("button", { cls: "mod-cta", text: this.plugin.t("ttsVoiceAddButton") });
 
