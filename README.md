@@ -29,7 +29,7 @@
 
 ![Before Markdown to After Read Along](assets/before-after-read-along.png)
 
-![目录和表格效果](assets/toc-table-effect.png)
+![高亮与表格效果](assets/highlight-table.png)
 
 <details>
 <summary>English README</summary>
