@@ -1026,36 +1026,23 @@ export default class ReadableHtmlExporterPlugin extends Plugin {
 
 		// One persistent light progress card (loader + progress bar + Cancel) instead of a
 		// fresh toast per sentence (which stacked up dozens deep on long notes).
-		injectLoaderCss();
 		const progress = new Notice("", 0);
 		const root = progress.noticeEl;
 		root.empty();
 		// Style the actual .notice toast (the dark chrome lives there, not on noticeEl).
 		const card = (root.closest(".notice") as HTMLElement | null) || root;
 		card.addClass("n2h-progress-card");
-		const head = root.createDiv();
-		head.setAttribute("style", "display:flex;align-items:center;gap:10px;min-width:230px;");
+		const head = root.createDiv({ cls: "n2h-progress-head" });
 		head.createEl("img", { cls: "n2h-loader-gif", attr: { src: this.loaderImgSrc() } });
-		const textWrap = head.createDiv();
-		textWrap.setAttribute("style", "flex:1;min-width:0;");
-		textWrap.createDiv({ text: this.t("noticeTtsGeneratingTitle") }).setAttribute("style", "font-weight:600;");
-		const descEl = textWrap.createDiv();
-		descEl.setAttribute("style", "font-size:11px;color:var(--text-muted);");
-		const cancelBtn = head.createEl("button", { text: this.t("ttsCancel") });
-		cancelBtn.setAttribute(
-			"style",
-			"flex-shrink:0;font-size:12px;padding:3px 10px;border-radius:6px;border:1px solid var(--background-modifier-border);background:transparent;color:var(--text-normal);cursor:pointer;"
-		);
+		const textWrap = head.createDiv({ cls: "n2h-progress-textwrap" });
+		textWrap.createDiv({ cls: "n2h-progress-title", text: this.t("noticeTtsGeneratingTitle") });
+		const descEl = textWrap.createDiv({ cls: "n2h-progress-desc" });
+		const cancelBtn = head.createEl("button", { cls: "n2h-progress-cancel", text: this.t("ttsCancel") });
 		cancelBtn.addEventListener("click", () => {
 			this.ttsGenerationId++; // bump id → loop detects cancellation
 		});
-		const track = root.createDiv();
-		track.setAttribute(
-			"style",
-			"margin-top:9px;height:5px;background:var(--background-modifier-border);border-radius:3px;overflow:hidden;"
-		);
-		const fill = track.createDiv();
-		fill.setAttribute("style", "height:100%;width:0%;background:#4b2ee6;border-radius:3px;transition:width 0.25s ease;");
+		const track = root.createDiv({ cls: "n2h-progress-track" });
+		const fill = track.createDiv({ cls: "n2h-progress-fill" });
 		const setProgress = (n: number): void => {
 			descEl.setText(n + " / " + sentences.length);
 			fill.style.width = Math.round((n / sentences.length) * 100) + "%";
