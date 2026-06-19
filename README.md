@@ -1,107 +1,105 @@
-# 语音伴读 - Read Along
+<div align="center">
 
-语言：中文介绍 / 展开下方 English README
+# 语音伴读 · Read Along
 
-> 本项目基于开源项目 [notes-to-html-pages](https://github.com/afanos/notes-to-html-pages)（作者 Afan，MIT 许可）二次开发，在其之上做了品牌化（语音伴读 / Read Along）与功能扩展（语音伴读、`#` 路径链接修复等）。感谢原作者。
+**中文** · [English](README.en.md)
 
-## 中文介绍
+把 Markdown 笔记导出成清晰、可离线阅读的网页，并可选「边听边读」——逐句朗读、读到哪句高亮哪句。
 
-**语音伴读 (Read Along)** 是一个 Obsidian 插件：把 Markdown 笔记导出成清晰、可离线阅读的网页，并可选开启「语音伴读」——调用 TTS 把全文**逐句朗读**出来，**读到哪句高亮哪句**，配一个内置播放器（播放 / 暂停 / 倍速 / 上一句下一句 / 进度条）。
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Obsidian](https://img.shields.io/badge/Obsidian-1.5.0%2B-7c3aed.svg)
+![Platform](https://img.shields.io/badge/platform-Desktop-555.svg)
+![Version](https://img.shields.io/badge/version-0.5.0-green.svg)
 
-它首先是一个**深度阅读导出器**：把拥挤的笔记变成像文章、报告、小册子一样的阅读页；再加上**语音伴读**，让长文可以「边听边读」。
+</div>
 
-导出的 `.html` 完全自包含（内联 CSS、可选内嵌图片与音频），不依赖外部网络，可以直接双击打开，也能在 Obsidian 文件列表里直接点开阅读。
+---
 
-它特别适合这些场景：
+## 简介
+
+**语音伴读 (Read Along)** 是一个 Obsidian 插件，它首先是一个**深度阅读导出器**：把拥挤的 Markdown 笔记变成像文章、报告、小册子一样舒服的阅读页；在此之上再加「**语音伴读**」——调用 TTS 把全文**逐句朗读**，**读到哪句高亮哪句**，配一个内置悬浮播放器（播放 / 暂停 / 倍速 / 上一句 · 下一句 / 进度条），让长文可以**边听边读**。
+
+导出的 `.html` 完全自包含（内联 CSS、可选内嵌图片与音频），读取时不依赖任何外部网络——既能直接双击在浏览器打开，也能在 Obsidian 文件列表里直接点开阅读。
+
+**适合的场景**
 
 - 把长笔记、调研文档、年度总结、深度文章导出成更舒服的阅读版；
 - 长文「听读」：通勤、护眼，或想换种方式再过一遍内容；
-- 自动生成可点击目录，长文里快速跳转；
-- 保留清晰的标题层级、引用块、重点提示、结论卡片、表格和 ASCII 图；
-- 纯 CSS 与内联资源，离线也能阅读和分享；
-- 在 Obsidian 内直接识别并打开 `.html` 文件，不用离开知识库；
-- 插件菜单和设置页支持中文 / English 切换；
-- 当前版本优先支持 Obsidian 桌面端。
-
-> ⚠️ 语音伴读功能需要你**自己的火山引擎（Volcengine）语音合成 API Key**；不开启语音伴读时全程本地、不联网。详见下方「隐私」。
+- 自动生成可点击目录，在长文里快速跳转；
+- 离线归档与分享：纯 CSS 与内联资源，断网也能读。
 
 ## 效果预览
 
-![Before Markdown to After Read Along](assets/before-after-read-along.png)
+![导出前后对比：Markdown 到语音伴读阅读页](assets/before-after-read-along.png)
 
-![高亮与表格效果](assets/highlight-table.png)
+![句子高亮与表格效果](assets/highlight-table.png)
 
-<details>
-<summary>English README</summary>
+## 功能特性
 
-**Read Along (语音伴读)** is an Obsidian plugin: it exports Markdown notes into clean, offline-readable web pages, and can optionally narrate the whole note sentence-by-sentence (TTS) with the current sentence highlighted as it plays, driven by a small built-in player (play/pause, speed, previous/next sentence, progress).
+- **🔊 语音伴读（可选）**：逐句调用 TTS 合成语音并内嵌进导出页，配悬浮播放器（播放 / 暂停 / 倍速 / 上一句下一句 / 进度条），播放时**当前句子实时高亮**。
+- **📄 自包含导出**：导出当前笔记或整个文件夹为 `.html`，内联 CSS、可选内嵌图片与音频，读取时零网络依赖。
+- **📖 清爽阅读排版**：窄栏正文、衬线字体、清晰标题层级、可点击目录、表格、代码块、引用块、重点提示、结论卡片，以及 ASCII 图块。
+- **🧭 应用内阅读**：注册 `.html` 阅读视图，导出页可直接在 Obsidian 文件列表里打开，无需离开知识库。
+- **🔗 源笔记反向链接**：可选在源笔记顶部插入整洁的回链——即使导出路径里包含 `#` 也能正确解析。
+- **🗂️ 结构与链接保留**：保留文件夹结构、把 wikilink 转换为同名 HTML 链接、把本地图片内嵌为 data URI（均可开关）。
+- **🌐 中英双语界面**：菜单与设置页支持中文 / English 切换。当前版本优先支持桌面端。
 
-At its core it is a **deep-reading exporter** that turns crowded notes into article-like reading pages; Read Along adds "listen while you read" on top.
+## 安装
 
-Exported `.html` is fully self-contained (inline CSS, optional inline images and audio) and needs no network at read time — double-click to open, or read it inside Obsidian.
+### 手动安装
 
-## Features
+1. 从 Release 下载这两个文件：`main.js` 与 `manifest.json`。
+2. 在你的 vault 中创建插件目录：
 
-- **Read Along (optional):** synthesizes the note sentence-by-sentence via TTS and embeds the audio into the exported page, with a floating player (play/pause, speed, prev/next sentence, progress bar) and sentence highlighting synced to playback.
-- Exports the current note or a whole folder to self-contained `.html` (inline CSS, optional inline images/audio, no read-time network dependency).
-- Clean reading layout: narrow body, serif typography, clear headings, a clickable table of contents, tables, code blocks, blockquotes, highlighted notes, conclusion callouts, and ASCII-diagram blocks.
-- Registers an in-app `.html` reader so exported pages open straight from the file explorer.
-- Optionally inserts a tidy back-link at the top of the source note — and it resolves correctly even when the export path contains `#`.
-- Preserves folder structure, converts wiki-links to same-name HTML pages, and embeds local images as data URIs (all optional).
-- Chinese / English UI. Desktop-first.
+   ```text
+   .obsidian/plugins/notes-to-html-pages/
+   ```
 
-## Install Manually
+3. 把 `main.js` 与 `manifest.json` 放进该目录。
+4. 重启（或重新加载）Obsidian。
+5. 在「第三方插件」中启用 **语音伴读 (Read Along)**。
 
-1. Download the release assets:
-   - `main.js`
-   - `manifest.json`
-2. Create this folder inside your vault:
+## 使用
 
-```text
-.obsidian/plugins/notes-to-html-pages/
-```
-
-3. Put `main.js` and `manifest.json` in that folder.
-4. Reload Obsidian.
-5. Enable `语音伴读` (Read Along) in Community plugins.
-
-## Use
-
-Export the current note:
+**导出当前笔记**——打开命令面板，运行：
 
 ```text
 语音伴读: 导出当前笔记为语音伴读页面
 ```
 
-You can also right-click a Markdown file or folder in the file explorer and choose the export command. Exported files are saved to `HTML Pages/` by default.
+也可以在文件列表里**右键**某个 Markdown 文件或文件夹，选择导出命令。导出文件默认保存到 `HTML Pages/`（可在设置里修改）。
 
-To enable **Read Along**, open the plugin settings, turn on **语音合成 (TTS)**, paste your Volcengine speech-synthesis API key, and pick a voice. The next export then bakes the per-sentence audio and synced highlighting into the page.
+设置页还可以调整：导出文件夹、样式预设、是否保留文件夹结构、wikilink 转换、图片内嵌、应用内 HTML 阅读、入口笔记生成、源笔记反向链接插入等。
 
-The settings also let you change the export folder, style preset, folder-structure behavior, wiki-link conversion, image embedding, in-app HTML reading, launcher-note generation, and source-note back-link insertion.
+### 开启语音伴读
 
-## Privacy
+1. 打开插件设置，启用 **语音合成 (TTS)**；
+2. 填入你**自己的火山引擎（Volcengine）语音合成 API Key**；
+3. 选择一个音色。
 
-The HTML export itself runs entirely **locally** — your note content is never uploaded for the page conversion.
+之后再导出，页面就会内嵌逐句音频与同步高亮。
 
-**Read Along is the one exception:** when TTS is enabled, the note's sentences are sent to Volcengine's (火山引擎) speech-synthesis API using *your own* API key, and the returned audio is embedded into the exported page. Leave Read Along off and nothing ever leaves your vault.
+> ⚠️ 火山引擎的语音合成接口是**境内服务，中国大陆可直接访问、无需代理**。如果你本机常驻代理（VPN / Clash 等），请确保它对 `bytedance.com` 走直连，否则生成会失败。
 
-## Development
+## 隐私
+
+HTML 导出本身**全程在本地运行**——网页转换不会上传你的任何笔记内容。
+
+**语音伴读是唯一的例外**：开启 TTS 后，笔记的句子会用*你自己的* API Key 发送到火山引擎（Volcengine）语音合成接口，返回的音频被内嵌进导出页。只要不开启语音伴读，所有内容都不会离开你的 vault。
+
+## 开发
 
 ```bash
 npm install
 npm run build
 ```
 
-The production build writes `main.js` to the repository root.
+生产构建会把 `main.js` 输出到仓库根目录。
 
-## Release
+> **发布**：Obsidian 社区发布要求 GitHub release tag 与 `manifest.json` 里的版本号**完全一致且不带 `v` 前缀**；release 资产需分别包含 `main.js` 与 `manifest.json` 两个文件。
 
-For Obsidian community releases, the GitHub release tag must exactly match the version in `manifest.json`, without a `v` prefix. The release assets must include `main.js` and `manifest.json` as separate files.
+## 致谢与许可
 
-## Credits & License
+本项目基于开源项目 [notes-to-html-pages](https://github.com/afanos/notes-to-html-pages)（作者 Afan，MIT 许可）二次开发，在其之上做了品牌化（语音伴读 / Read Along）与功能扩展（语音伴读、`#` 路径链接修复等）。原始版权声明保留在 `LICENSE` 中。感谢原作者。
 
-Based on the open-source project [notes-to-html-pages](https://github.com/afanos/notes-to-html-pages) by Afan (MIT). The original copyright notice is retained in `LICENSE`; this fork adds the Read Along (语音伴读) branding and features.
-
-MIT.
-
-</details>
+基于 [MIT](LICENSE) 许可发布。
