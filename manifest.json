@@ -1,9 +1,9 @@
 {
 	"id": "read-along",
 	"name": "Read Along",
-	"version": "0.5.2",
+	"version": "0.5.3",
 	"minAppVersion": "1.5.0",
-	"description": "Export notes into clean, offline-readable pages, with optional Read Along — TTS narration plus synchronized sentence highlighting.",
+	"description": "把笔记导出成清晰、可离线阅读的网页，并可选「语音伴读」逐句朗读、读到哪句高亮哪句。Export notes into clean, offline-readable pages with optional Read Along — sentence-by-sentence TTS narration and synced highlighting.",
 	"author": "拔插头艺术家",
 	"authorUrl": "https://github.com/zebo101",
 	"isDesktopOnly": true
