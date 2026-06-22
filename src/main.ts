@@ -2746,9 +2746,9 @@ body {
 	margin-top: -1.5rem;
 	border-radius: 999px;
 	background: var(--page-bg);
-	box-shadow: 0 0 0 1px rgba(128, 128, 128, 0.22), 0 2px 8px rgba(15, 23, 42, 0.3);
+	box-shadow: 0 0 0 1px rgba(128, 128, 128, 0.16), 0 1px 5px rgba(15, 23, 42, 0.2);
 	opacity: 0;
-	transition: opacity 0.25s ease, height 0.18s ease, box-shadow 0.18s ease;
+	transition: opacity 0.25s ease, box-shadow 0.18s ease;
 }
 
 .width-handle.is-visible::before {
@@ -2756,9 +2756,7 @@ body {
 }
 
 .width-handle:hover::before {
-	height: 3.6rem;
-	margin-top: -1.8rem;
-	box-shadow: 0 0 0 1px rgba(128, 128, 128, 0.35), 0 3px 12px rgba(15, 23, 42, 0.4);
+	box-shadow: 0 0 0 1px rgba(128, 128, 128, 0.24), 0 2px 7px rgba(15, 23, 42, 0.28);
 }
 
 @media (max-width: 900px) {
