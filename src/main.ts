@@ -710,6 +710,7 @@ export default class ReadableHtmlExporterPlugin extends Plugin {
 			`<body class="style-${stylePreset}">`,
 			`<main class="page${ttsPlayerHtml ? " has-tts-player" : ""}">`,
 			body,
+			`<div class="width-handle" title="${documentLanguage === "zh" ? "拖动或滚动调整宽度" : "Drag or scroll to adjust width"}" aria-hidden="true"></div>`,
 			"</main>",
 			ttsPlayerHtml,
 			ttsScript,
@@ -2722,6 +2723,41 @@ body {
 .side-table-of-contents a:hover::before,
 .side-table-of-contents a:focus-visible::before {
 	color: var(--accent);
+}
+
+.width-handle {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 1.1rem;
+	height: 100%;
+	cursor: ew-resize;
+	touch-action: none;
+	z-index: 50;
+}
+
+.width-handle::before {
+	content: "";
+	position: absolute;
+	top: 50%;
+	right: 0.4rem;
+	width: 3px;
+	height: 2.4rem;
+	margin-top: -1.2rem;
+	border-radius: 999px;
+	background: var(--accent);
+	opacity: 0;
+	transition: opacity 0.18s ease;
+}
+
+.width-handle:hover::before {
+	opacity: 0.7;
+}
+
+@media (max-width: 900px) {
+	.width-handle {
+		display: none;
+	}
 }
 
 .article-body {
