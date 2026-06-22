@@ -2500,7 +2500,6 @@ const CLEAN_HTML_CSS = `
 	--accent-soft: #e1f0ff;
 	--quote-bg: #efeff0;
 	--code-bg: #eaeaeb;
-	--table-head-bg: #edf0f4;
 	--table-stripe: #f6f8fa;
 	--link: #0485f7;
 }
@@ -2536,7 +2535,6 @@ const CLEAN_HTML_CSS = `
 	--accent-soft: #173455;
 	--quote-bg: #222324;
 	--code-bg: #262728;
-	--table-head-bg: #202327;
 	--table-stripe: #1b1d20;
 	--link: #0485f7;
 }
@@ -3052,15 +3050,15 @@ table {
 }
 
 thead th {
-	background: var(--table-head-bg);
+	background: transparent;
 	color: var(--muted);
-	font-weight: 600;
+	font-weight: 500;
 	font-size: 0.72rem;
 	letter-spacing: 0.04em;
 	white-space: nowrap;
 	text-align: left;
 	vertical-align: middle;
-	padding: 0.7rem 1.15rem;
+	padding: 0.66rem 1.15rem;
 	border-bottom: 1px solid var(--line);
 }
 
