@@ -3030,70 +3030,57 @@ hr {
 
 .table-scroll {
 	max-width: 100%;
-	margin: 1.45rem 0;
+	margin: 1.7rem 0;
 	border: 1px solid var(--line);
-	border-radius: 8px;
+	border-radius: 12px;
 	background: var(--paper);
 	overflow-x: auto;
 }
 
+/* Clean, crisp data table: sans-serif for precision, muted spaced header,
+   airy rows with hairline dividers, subtle full-row hover. */
 table {
 	width: max-content;
 	min-width: 100%;
 	border-collapse: separate;
 	border-spacing: 0;
 	background: var(--paper);
-	font-size: 0.84rem;
-	line-height: 1.55;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+	font-size: 0.82rem;
+	line-height: 1.6;
+	font-variant-numeric: tabular-nums;
 }
 
-thead {
-	background: transparent;
-}
-
-th {
+thead th {
 	background: var(--table-head-bg);
-	color: var(--ink);
+	color: var(--muted);
 	font-weight: 600;
+	font-size: 0.72rem;
+	letter-spacing: 0.04em;
 	white-space: nowrap;
+	text-align: left;
+	vertical-align: middle;
+	padding: 0.7rem 1.15rem;
 	border-bottom: 1px solid var(--line);
 }
 
-th,
 td {
-	padding: 0.6rem 0.95rem;
-	border: 0;
+	padding: 0.82rem 1.15rem;
 	border-bottom: 1px solid var(--line-soft);
 	text-align: left;
 	vertical-align: top;
-	font-variant-numeric: tabular-nums;
+	color: var(--ink);
 }
 
 tbody tr:last-child td {
 	border-bottom: 0;
 }
 
-/* Subtle zebra striping aids row scanning across wide tables. */
-tbody tr:nth-child(even) td {
-	background: var(--table-stripe);
+tbody tr {
+	transition: background-color 120ms ease;
 }
 
-/* Freeze the first column so the row label stays visible while scrolling wide tables. */
-th:first-child,
-td:first-child {
-	position: sticky;
-	left: 0;
-	z-index: 1;
-	background: var(--paper);
-	box-shadow: 1px 0 0 var(--line), 5px 0 9px -5px rgba(15, 40, 90, 0.1);
-}
-
-th:first-child {
-	z-index: 2;
-	background: var(--table-head-bg);
-}
-
-tbody tr:nth-child(even) td:first-child {
+tbody tr:hover td {
 	background: var(--table-stripe);
 }
 
