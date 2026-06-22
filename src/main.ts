@@ -1922,8 +1922,7 @@ class ReadableHtmlView extends FileView {
 
 	async onLoadFile(file: TFile): Promise<void> {
 		const html = await this.app.vault.cachedRead(file);
-		const hasTts = html.includes('id="tts-player"');
-		const iframe = this.createIframe(hasTts);
+		const iframe = this.createIframe();
 
 		this.contentEl.empty();
 		this.contentEl.setAttr(
@@ -2013,20 +2012,20 @@ class ReadableHtmlView extends FileView {
 		this.contentEl.empty();
 	}
 
-	private createIframe(hasTts = false): HTMLIFrameElement {
+	private createIframe(): HTMLIFrameElement {
 		const iframe = activeDocument.createElement("iframe");
 		iframe.setAttribute("title", "Readable HTML");
+		// Every exported page ships an inline script (the width adjuster, plus the TTS
+		// player when present), so scripts must run for all pages — not only TTS ones.
 		iframe.setAttribute(
 			"sandbox",
-			hasTts
-				? "allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-scripts"
-				: "allow-same-origin allow-popups allow-popups-to-escape-sandbox"
+			"allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-scripts"
 		);
 		iframe.setAttribute(
 			"csp",
 			[
 				"default-src 'none'",
-				hasTts ? "script-src 'unsafe-inline'" : "script-src 'none'",
+				"script-src 'unsafe-inline'",
 				"object-src 'none'",
 				"frame-src 'none'",
 				"style-src 'unsafe-inline'",
@@ -3414,9 +3413,10 @@ body.tts-playing .article-body .tts-s.tts-active strong {
 
 const WIDTH_ADJUST_JS = `
 (function() {
+	// DEF must match the --read-width default declared in :root in the CSS above.
 	var MIN = 600, DEF = 720, STEP = 40, KEY = "notes-to-html-pages:read-width";
 	var root = document.documentElement;
-	function maxW() { return Math.min(window.innerWidth - 64, 1400); }
+	function maxW() { var w = window.innerWidth || 1440; return Math.min(w - 64, 1400); }
 	function clamp(px) { return Math.max(MIN, Math.min(maxW(), px)); }
 	function cur() {
 		var v = parseInt(getComputedStyle(root).getPropertyValue("--read-width"), 10);
@@ -3427,7 +3427,7 @@ const WIDTH_ADJUST_JS = `
 		root.style.setProperty("--read-width", px + "px");
 		if (persist) { try { localStorage.setItem(KEY, String(px)); } catch (e) {} }
 	}
-	try { var saved = localStorage.getItem(KEY); if (saved) apply(parseInt(saved, 10), false); } catch (e) {}
+	try { var saved = parseInt(localStorage.getItem(KEY), 10); if (!isNaN(saved)) apply(saved, false); } catch (e) {}
 	document.addEventListener("DOMContentLoaded", function() {
 		var handle = document.querySelector(".width-handle");
 		if (!handle) return;
@@ -3455,6 +3455,7 @@ const WIDTH_ADJUST_JS = `
 			e.preventDefault();
 			apply(cur() + (d > 0 ? STEP : -STEP), true);
 		}, { passive: false });
+		window.addEventListener("resize", function() { apply(cur(), false); });
 	});
 })();
 `;
