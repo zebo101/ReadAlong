@@ -2500,6 +2500,8 @@ const CLEAN_HTML_CSS = `
 	--accent-soft: #e1f0ff;
 	--quote-bg: #efeff0;
 	--code-bg: #eaeaeb;
+	--table-head-bg: #edf0f4;
+	--table-stripe: #f6f8fa;
 	--link: #0485f7;
 }
 
@@ -2534,6 +2536,8 @@ const CLEAN_HTML_CSS = `
 	--accent-soft: #173455;
 	--quote-bg: #222324;
 	--code-bg: #262728;
+	--table-head-bg: #202327;
+	--table-stripe: #1b1d20;
 	--link: #0485f7;
 }
 
@@ -3048,9 +3052,9 @@ thead {
 }
 
 th {
-	background: var(--quote-bg);
+	background: var(--table-head-bg);
 	color: var(--ink);
-	font-weight: 700;
+	font-weight: 600;
 	white-space: nowrap;
 	border-bottom: 1px solid var(--line);
 }
@@ -3071,7 +3075,7 @@ tbody tr:last-child td {
 
 /* Subtle zebra striping aids row scanning across wide tables. */
 tbody tr:nth-child(even) td {
-	background: var(--quote-bg);
+	background: var(--table-stripe);
 }
 
 /* Freeze the first column so the row label stays visible while scrolling wide tables. */
@@ -3086,11 +3090,11 @@ td:first-child {
 
 th:first-child {
 	z-index: 2;
-	background: var(--quote-bg);
+	background: var(--table-head-bg);
 }
 
 tbody tr:nth-child(even) td:first-child {
-	background: var(--quote-bg);
+	background: var(--table-stripe);
 }
 
 pre,
