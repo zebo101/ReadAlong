@@ -35,6 +35,7 @@
 ![导出前后对比：Markdown 到语音伴读阅读页](assets/before-after-read-along.png)
 <img width="1798" height="1099" alt="8a4af7e976cdfc7cd0f234bacaa57c2e" src="https://github.com/user-attachments/assets/aa2ca781-7e71-4764-bc80-1d309e33d143" />
 <img width="1897" height="1191" alt="03b4b39d6ff89db71e89eb0771a497ac" src="https://github.com/user-attachments/assets/09553f27-b45b-446a-a42a-ac104880da55" />
+<img width="2466" height="1532" alt="image" src="https://github.com/user-attachments/assets/4e223187-ad91-4112-9f2d-3525cab2bc4b" />
 
 
 
@@ -47,6 +48,7 @@
 - **🔗 源笔记反向链接**：可选在源笔记顶部插入整洁的回链——即使导出路径里包含 `#` 也能正确解析。
 - **🗂️ 结构与链接保留**：保留文件夹结构、把 wikilink 转换为同名 HTML 链接、把本地图片内嵌为 data URI（均可开关）。
 - **🌐 中英双语界面**：菜单与设置页支持中文 / English 切换。当前版本优先支持桌面端。
+- **📖 可调阅读宽度**：正文列右边缘有一根竖条把手:平时颜色贴近页面背景、只靠柔和阴影显形,下滑时隐藏、停下/上滑时出现,不打扰阅读。。
 
 ## 安装
 
