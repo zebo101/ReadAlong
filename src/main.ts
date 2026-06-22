@@ -3026,12 +3026,13 @@ hr {
 	border-top: 1px solid var(--line-soft);
 }
 
+/* Grey card layer; the white row panel sits inset on top of it. */
 .table-scroll {
 	max-width: 100%;
 	margin: 1.7rem 0;
-	border: 1px solid var(--line);
-	border-radius: 12px;
-	background: var(--paper);
+	border-radius: 16px;
+	background: var(--quote-bg);
+	padding: 0.45rem;
 	overflow-x: auto;
 }
 
@@ -3042,7 +3043,7 @@ table {
 	min-width: 100%;
 	border-collapse: separate;
 	border-spacing: 0;
-	background: var(--paper);
+	background: transparent;
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
 	font-size: 0.82rem;
 	line-height: 1.6;
@@ -3058,12 +3059,12 @@ thead th {
 	white-space: nowrap;
 	text-align: left;
 	vertical-align: middle;
-	padding: 0.66rem 1.15rem;
-	border-bottom: 1px solid var(--line);
+	padding: 0.4rem 1.1rem 0.55rem;
 }
 
 td {
-	padding: 0.82rem 1.15rem;
+	padding: 0.82rem 1.1rem;
+	background: var(--paper);
 	border-bottom: 1px solid var(--line-soft);
 	text-align: left;
 	vertical-align: top;
@@ -3072,6 +3073,23 @@ td {
 
 tbody tr:last-child td {
 	border-bottom: 0;
+}
+
+/* Round the white body block's outer corners so it reads as an inset panel. */
+tbody tr:first-child td:first-child {
+	border-top-left-radius: 11px;
+}
+
+tbody tr:first-child td:last-child {
+	border-top-right-radius: 11px;
+}
+
+tbody tr:last-child td:first-child {
+	border-bottom-left-radius: 11px;
+}
+
+tbody tr:last-child td:last-child {
+	border-bottom-right-radius: 11px;
 }
 
 tbody tr {
