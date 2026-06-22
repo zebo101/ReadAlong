@@ -2695,6 +2695,7 @@ body {
 }
 
 .floating-toc__trigger {
+	position: relative;
 	display: inline-flex;
 	flex-direction: column;
 	align-items: flex-end;
@@ -2703,6 +2704,16 @@ body {
 	cursor: pointer;
 	outline: none;
 	-webkit-tap-highlight-color: transparent;
+}
+
+/* Transparent bridge across the gap so hover doesn't drop between bars and panel. */
+.floating-toc__trigger::before {
+	content: "";
+	position: absolute;
+	top: -0.5rem;
+	bottom: -0.5rem;
+	right: 100%;
+	width: 0.8rem;
 }
 
 .floating-toc__bar {
@@ -2735,40 +2746,50 @@ body {
 .floating-toc__content {
 	--floating-toc-item-indent: 0.85rem;
 	position: absolute;
-	top: 50%;
-	right: calc(100% + 0.5rem);
+	top: 0;
+	right: calc(100% + 0.45rem);
 	width: 15rem;
-	max-height: min(64vh, 420px);
+	max-height: min(68vh, 460px);
 	padding: 0.4rem;
 	border: 1px solid var(--line);
 	border-radius: 14px;
 	background: var(--paper);
 	box-shadow: 0 12px 40px rgba(15, 40, 90, 0.16), 0 2px 8px rgba(15, 40, 90, 0.06);
+	overflow-x: hidden;
 	overflow-y: auto;
 	overscroll-behavior: contain;
+	scrollbar-width: thin;
+	scrollbar-color: var(--line) transparent;
 	opacity: 0;
 	visibility: hidden;
-	transform: translateY(-50%) scale(0.97);
-	transform-origin: right center;
+	transform: scale(0.97);
+	transform-origin: right top;
 	transition: opacity 150ms ease, transform 150ms ease, visibility 150ms;
 	pointer-events: none;
 }
 
-/* Transparent bridge so moving from the bars to the panel doesn't drop the hover. */
-.floating-toc__content::before {
-	content: "";
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	right: -0.6rem;
-	width: 0.6rem;
+.floating-toc__content::-webkit-scrollbar {
+	width: 6px;
+}
+
+.floating-toc__content::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+.floating-toc__content::-webkit-scrollbar-thumb {
+	border-radius: 999px;
+	background: var(--line);
+}
+
+.floating-toc__content::-webkit-scrollbar-thumb:hover {
+	background: var(--muted);
 }
 
 .floating-toc:hover .floating-toc__content,
 .floating-toc:focus-within .floating-toc__content {
 	opacity: 1;
 	visibility: visible;
-	transform: translateY(-50%) scale(1);
+	transform: scale(1);
 	pointer-events: auto;
 }
 
@@ -3124,9 +3145,8 @@ sup {
 	.floating-toc {
 		display: block;
 		position: fixed;
-		top: 50%;
+		top: 5rem;
 		right: max(1rem, calc((100vw - var(--page-width)) / 2 - 3rem));
-		transform: translateY(-50%);
 		z-index: 70;
 	}
 }
