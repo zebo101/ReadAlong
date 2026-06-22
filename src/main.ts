@@ -2726,14 +2726,14 @@ body {
 }
 
 .width-handle {
-	position: absolute;
+	position: fixed;
 	top: 0;
-	right: 0;
+	left: calc(50% + var(--page-width) / 2 - 1.1rem);
 	width: 1.1rem;
-	height: 100%;
+	height: 100vh;
 	cursor: ew-resize;
 	touch-action: none;
-	z-index: 50;
+	z-index: 60;
 }
 
 .width-handle::before {
@@ -3389,6 +3389,7 @@ body.tts-playing .article-body .tts-s.tts-active strong {
 	.tts-player { transition: none; }
 	.tts-progress-bar { transition: none; }
 	.tts-player.is-playing .tts-eq i { animation: none; }
+	.width-handle::before { transition: none; }
 }
 
 @media (max-width: 780px) {
