@@ -715,6 +715,7 @@ export default class ReadableHtmlExporterPlugin extends Plugin {
 			ttsPlayerHtml,
 			ttsScript,
 			`<script>${WIDTH_ADJUST_JS}</script>`,
+			`<script>${FLOATING_TOC_JS}</script>`,
 			"</body>",
 			"</html>"
 			].filter(Boolean).join("\n")
@@ -1202,44 +1203,65 @@ export default class ReadableHtmlExporterPlugin extends Plugin {
 	}
 
 	private createAutoToc(wrapper: Element, documentLanguage: UiLanguage): string {
-		const headings = Array.from(wrapper.querySelectorAll("h2")).filter(
+		const allHeadings = Array.from(wrapper.querySelectorAll("h2, h3, h4")).filter(
 			(heading) => !this.isTocHeading(heading)
 		);
 
-		if (headings.length < 2) {
+		if (allHeadings.filter((heading) => heading.tagName === "H2").length < 2) {
 			return "";
 		}
 
 		const usedIds = new Map<string, number>();
-		const items = headings.map((heading) => {
+		const entries = allHeadings.map((heading) => {
 			const text =
 				heading.textContent?.trim() ||
 				this.tForLanguage(documentLanguage, "untitledSection");
 			const existingId = heading.getAttribute("id");
 			const id = existingId || this.createUniqueHeadingId(text, usedIds);
 			heading.setAttribute("id", id);
-
-			return `<li><a href="#${this.escapeHtml(id)}">${this.escapeHtml(
-				this.cleanTocLabel(text)
-			)}</a></li>`;
+			// h2 -> level 1, h3 -> 2, h4 -> 3
+			const level = Number(heading.tagName.charAt(1)) - 1;
+			return { id, label: this.cleanTocLabel(text), level };
 		});
 
 		const tocLabel = this.tForLanguage(documentLanguage, "toc");
 		const sectionTocLabel = this.tForLanguage(documentLanguage, "sectionTocAria");
 
+		// In-body numbered TOC lists only top-level (h2) sections — unchanged.
+		const bodyItems = entries
+			.filter((entry) => entry.level === 1)
+			.map(
+				(entry) =>
+					`<li><a href="#${this.escapeHtml(entry.id)}">${this.escapeHtml(entry.label)}</a></li>`
+			);
+
+		// Floating minimap TOC: a stack of level-sized bars that expands on hover into a
+		// hierarchical, scroll-synced panel (mirrors HeroUI Pro's FloatingToc).
+		const bars = entries.map(
+			(entry) =>
+				`<span class="floating-toc__bar" data-toc-id="${this.escapeHtml(entry.id)}" style="--floating-toc-level: ${entry.level}"></span>`
+		);
+		const panelItems = entries.map(
+			(entry) =>
+				`<a class="floating-toc__item" href="#${this.escapeHtml(entry.id)}" data-toc-id="${this.escapeHtml(entry.id)}" style="--floating-toc-level: ${entry.level}">${this.escapeHtml(entry.label)}</a>`
+		);
+
 		return [
 			`<nav class="table-of-contents" aria-label="${this.escapeHtml(tocLabel)}">`,
 			`<h2>${this.escapeHtml(tocLabel)}</h2>`,
 			"<ol>",
-			items.join("\n"),
+			bodyItems.join("\n"),
 			"</ol>",
 			"</nav>",
-			`<aside class="side-table-of-contents" aria-label="${this.escapeHtml(sectionTocLabel)}">`,
-			`<div class="side-toc-title">${this.escapeHtml(tocLabel)}</div>`,
-			"<ol>",
-			items.join("\n"),
-			"</ol>",
-			"</aside>"
+			`<div class="floating-toc">`,
+			`<div class="floating-toc__trigger" tabindex="0" role="button" aria-label="${this.escapeHtml(sectionTocLabel)}">`,
+			bars.join("\n"),
+			"</div>",
+			`<nav class="floating-toc__content" aria-label="${this.escapeHtml(sectionTocLabel)}">`,
+			`<span class="floating-toc__label">${this.escapeHtml(tocLabel)}</span>`,
+			panelItems.join("\n"),
+			"</nav>",
+			"</div>"
 		].join("\n");
 	}
 
@@ -2667,62 +2689,120 @@ body {
 	color: var(--accent);
 }
 
-.side-table-of-contents {
+/* Floating minimap TOC (HeroUI-style): level-sized bars, expands to a panel on hover. */
+.floating-toc {
 	display: none;
 }
 
-.side-toc-title {
-	margin: 0 0 0.75rem;
+.floating-toc__trigger {
+	display: inline-flex;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: 12px;
+	padding: 0.5rem 0.35rem;
+	cursor: pointer;
+	outline: none;
+	-webkit-tap-highlight-color: transparent;
+}
+
+.floating-toc__bar {
+	--floating-toc-bar-width: 16px;
+	--floating-toc-bar-active-width: 24px;
+	--floating-toc-bar-height: 2px;
+	--floating-toc-bar-level-step: 3px;
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	width: var(--floating-toc-bar-active-width);
+	height: var(--floating-toc-bar-height);
+}
+
+.floating-toc__bar::after {
+	content: "";
+	display: block;
+	height: var(--floating-toc-bar-height);
+	width: calc(var(--floating-toc-bar-width) - (var(--floating-toc-level, 1) - 1) * var(--floating-toc-bar-level-step));
+	border-radius: 2px;
+	background: var(--line);
+	transition: width 150ms ease, background-color 150ms ease;
+}
+
+.floating-toc__bar.is-active::after {
+	width: calc(var(--floating-toc-bar-active-width) - (var(--floating-toc-level, 1) - 1) * var(--floating-toc-bar-level-step));
+	background: var(--accent);
+}
+
+.floating-toc__content {
+	--floating-toc-item-indent: 0.85rem;
+	position: absolute;
+	top: 50%;
+	right: calc(100% + 0.5rem);
+	width: 15rem;
+	max-height: min(64vh, 420px);
+	padding: 0.4rem;
+	border: 1px solid var(--line);
+	border-radius: 14px;
+	background: var(--paper);
+	box-shadow: 0 12px 40px rgba(15, 40, 90, 0.16), 0 2px 8px rgba(15, 40, 90, 0.06);
+	overflow-y: auto;
+	overscroll-behavior: contain;
+	opacity: 0;
+	visibility: hidden;
+	transform: translateY(-50%) scale(0.97);
+	transform-origin: right center;
+	transition: opacity 150ms ease, transform 150ms ease, visibility 150ms;
+	pointer-events: none;
+}
+
+/* Transparent bridge so moving from the bars to the panel doesn't drop the hover. */
+.floating-toc__content::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: -0.6rem;
+	width: 0.6rem;
+}
+
+.floating-toc:hover .floating-toc__content,
+.floating-toc:focus-within .floating-toc__content {
+	opacity: 1;
+	visibility: visible;
+	transform: translateY(-50%) scale(1);
+	pointer-events: auto;
+}
+
+.floating-toc__label {
+	display: block;
+	padding: 0.3rem 0.7rem 0.4rem;
 	color: var(--muted);
-	font-size: 0.72rem;
+	font-size: 0.66rem;
 	font-weight: 700;
+	letter-spacing: 0.09em;
 	text-transform: uppercase;
 }
 
-.side-table-of-contents ol {
-	margin: 0;
-	padding: 0;
-	list-style: none;
-	counter-reset: side-toc;
-	font-size: 0.76rem;
-	line-height: 1.36;
-}
-
-.side-table-of-contents li {
-	margin: 0;
-	padding: 0;
-	counter-increment: side-toc;
-}
-
-.side-table-of-contents a {
-	display: grid;
-	grid-template-columns: 2em minmax(0, 1fr);
-	gap: 0.28rem;
-	margin: 0 -0.35rem;
-	padding: 0.22rem 0.35rem;
-	border-radius: 5px;
+.floating-toc__item {
+	display: block;
+	padding: 0.32rem 0.7rem;
+	padding-left: calc(0.7rem + (var(--floating-toc-level, 1) - 1) * var(--floating-toc-item-indent));
+	border-radius: 8px;
 	color: var(--muted);
+	font-size: 0.82rem;
+	line-height: 1.4;
 	text-decoration: none;
-	cursor: pointer;
-	transition: color 160ms ease, background-color 160ms ease;
+	transition: color 140ms ease, background-color 140ms ease;
 }
 
-.side-table-of-contents a::before {
-	content: counter(side-toc) ".";
-	color: var(--muted);
-	text-align: right;
-	transition: color 160ms ease;
-}
-
-.side-table-of-contents a:hover,
-.side-table-of-contents a:focus-visible {
+.floating-toc__item:hover,
+.floating-toc__item:focus-visible {
 	background: var(--accent-soft);
-	color: var(--accent);
+	color: var(--ink);
 }
 
-.side-table-of-contents a:hover::before,
-.side-table-of-contents a:focus-visible::before {
+.floating-toc__item.is-active {
 	color: var(--accent);
+	font-weight: 600;
 }
 
 .width-handle {
@@ -3040,18 +3120,14 @@ sup {
 	line-height: 0;
 }
 
-@media (min-width: 1360px) {
-	.side-table-of-contents {
+@media (min-width: 1200px) {
+	.floating-toc {
 		display: block;
 		position: fixed;
-		top: 4.6rem;
-		right: max(1.2rem, calc((100vw - var(--page-width)) / 2 - 14.8rem));
-		width: 13rem;
-		max-height: calc(100vh - 6rem);
-		padding: 0.85rem 0.95rem;
-		border-left: 1px solid var(--line-soft);
-		background: var(--page-bg);
-		overflow: auto;
+		top: 50%;
+		right: max(1rem, calc((100vw - var(--page-width)) / 2 - 3rem));
+		transform: translateY(-50%);
+		z-index: 70;
 	}
 }
 
@@ -3415,6 +3491,42 @@ body.tts-playing .article-body .tts-s.tts-active strong {
 	}
 }
 `.trim();
+
+const FLOATING_TOC_JS = `
+(function() {
+	document.addEventListener("DOMContentLoaded", function() {
+		var toc = document.querySelector(".floating-toc");
+		if (!toc) return;
+		var bars = Array.prototype.slice.call(toc.querySelectorAll(".floating-toc__bar"));
+		var items = Array.prototype.slice.call(toc.querySelectorAll(".floating-toc__item"));
+		if (!bars.length) return;
+		var ids = bars.map(function(bar) { return bar.getAttribute("data-toc-id"); });
+		function setActive(id) {
+			bars.forEach(function(bar) {
+				bar.classList.toggle("is-active", bar.getAttribute("data-toc-id") === id);
+			});
+			items.forEach(function(item) {
+				item.classList.toggle("is-active", item.getAttribute("data-toc-id") === id);
+			});
+		}
+		function onScroll() {
+			var current = ids[0], bestTop = -Infinity;
+			for (var i = 0; i < ids.length; i++) {
+				var el = document.getElementById(ids[i]);
+				if (!el) continue;
+				var top = el.getBoundingClientRect().top - 120;
+				if (top <= 0 && top > bestTop) {
+					bestTop = top;
+					current = ids[i];
+				}
+			}
+			setActive(current);
+		}
+		window.addEventListener("scroll", onScroll, { passive: true });
+		onScroll();
+	});
+})();
+`;
 
 const WIDTH_ADJUST_JS = `
 (function() {
