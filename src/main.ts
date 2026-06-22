@@ -2740,20 +2740,21 @@ body {
 	content: "";
 	position: absolute;
 	top: 50%;
-	right: 0.4rem;
-	width: 4px;
-	height: 3.2rem;
-	margin-top: -1.6rem;
+	right: 0.45rem;
+	width: 2px;
+	height: 2.8rem;
+	margin-top: -1.4rem;
 	border-radius: 999px;
-	background: var(--accent);
-	opacity: 0.35;
-	transition: opacity 0.18s ease, height 0.18s ease;
+	background: var(--muted);
+	opacity: 0.3;
+	transition: opacity 0.18s ease, height 0.18s ease, background 0.18s ease;
 }
 
 .width-handle:hover::before {
-	opacity: 0.9;
-	height: 4rem;
-	margin-top: -2rem;
+	background: var(--accent);
+	opacity: 0.75;
+	height: 3.6rem;
+	margin-top: -1.8rem;
 }
 
 @media (max-width: 900px) {
