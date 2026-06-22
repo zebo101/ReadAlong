@@ -2541,6 +2541,30 @@ const CLEAN_HTML_CSS = `
 	box-sizing: border-box;
 }
 
+/* Thin, design-matched scrollbars everywhere (page, tables, code blocks, panels). */
+* {
+	scrollbar-width: thin;
+	scrollbar-color: var(--line) transparent;
+}
+
+::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+	border-radius: 999px;
+	background: var(--line);
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: var(--muted);
+}
+
 html {
 	background: var(--page-bg);
 	font-size: 16px;
@@ -2758,31 +2782,12 @@ body {
 	overflow-x: hidden;
 	overflow-y: auto;
 	overscroll-behavior: contain;
-	scrollbar-width: thin;
-	scrollbar-color: var(--line) transparent;
 	opacity: 0;
 	visibility: hidden;
 	transform: scale(0.97);
 	transform-origin: right top;
 	transition: opacity 150ms ease, transform 150ms ease, visibility 150ms;
 	pointer-events: none;
-}
-
-.floating-toc__content::-webkit-scrollbar {
-	width: 6px;
-}
-
-.floating-toc__content::-webkit-scrollbar-track {
-	background: transparent;
-}
-
-.floating-toc__content::-webkit-scrollbar-thumb {
-	border-radius: 999px;
-	background: var(--line);
-}
-
-.floating-toc__content::-webkit-scrollbar-thumb:hover {
-	background: var(--muted);
 }
 
 .floating-toc:hover .floating-toc__content,
