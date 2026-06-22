@@ -9,7 +9,7 @@ Export Markdown notes into clean, offline-readable web pages — with optional "
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Obsidian](https://img.shields.io/badge/Obsidian-1.5.0%2B-7c3aed.svg)
 ![Platform](https://img.shields.io/badge/platform-Desktop-555.svg)
-![Version](https://img.shields.io/badge/version-0.5.0-green.svg)
+![Version](https://img.shields.io/badge/version-0.5.8-green.svg)
 
 </div>
 
@@ -32,7 +32,11 @@ Exported `.html` is fully self-contained (inline CSS, optional inline images and
 
 ![Before / after: Markdown to a Read Along reading page](assets/before-after-read-along.png)
 
-![Sentence highlighting and tables](assets/highlight-table.png)
+![Floating table of contents and the redesigned data table](assets/1.png)
+
+![Full reading page: TOC, table, and the side floating TOC](assets/2.png)
+
+![Read Along page: highlighting, player, and floating TOC](assets/3.png)
 
 ## Features
 

@@ -9,7 +9,7 @@
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 ![Obsidian](https://img.shields.io/badge/Obsidian-1.5.0%2B-7c3aed.svg)
 ![Platform](https://img.shields.io/badge/platform-Desktop-555.svg)
-![Version](https://img.shields.io/badge/version-0.5.0-green.svg)
+![Version](https://img.shields.io/badge/version-0.5.8-green.svg)
 
 </div>
 
@@ -34,9 +34,11 @@
 
 ![导出前后对比：Markdown 到语音伴读阅读页](assets/before-after-read-along.png)
 
+![浮动目录与重设计的数据表格](assets/1.png)
 
+![整页阅读视图：目录、表格与侧边浮动目录](assets/2.png)
 
-
+![语音伴读阅读页：高亮、播放器与浮动目录](assets/3.png)
 
 ## 功能特性
 
