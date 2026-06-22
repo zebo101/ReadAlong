@@ -3028,7 +3028,7 @@ hr {
 	max-width: 100%;
 	margin: 1.45rem 0;
 	border: 1px solid var(--line);
-	border-radius: 6px;
+	border-radius: 8px;
 	background: var(--paper);
 	overflow-x: auto;
 }
@@ -3052,32 +3052,45 @@ th {
 	color: var(--ink);
 	font-weight: 700;
 	white-space: nowrap;
+	border-bottom: 1px solid var(--line);
 }
 
 th,
 td {
-	padding: 0.55rem 0.66rem;
+	padding: 0.6rem 0.95rem;
 	border: 0;
-	border-right: 1px solid var(--line);
-	border-bottom: 1px solid var(--line);
+	border-bottom: 1px solid var(--line-soft);
 	text-align: left;
 	vertical-align: top;
-}
-
-tr > :last-child {
-	border-right: 0;
+	font-variant-numeric: tabular-nums;
 }
 
 tbody tr:last-child td {
 	border-bottom: 0;
 }
 
-tbody tr:nth-child(even) {
+/* Subtle zebra striping aids row scanning across wide tables. */
+tbody tr:nth-child(even) td {
 	background: var(--quote-bg);
 }
 
-tbody tr:hover {
-	background: var(--code-bg);
+/* Freeze the first column so the row label stays visible while scrolling wide tables. */
+th:first-child,
+td:first-child {
+	position: sticky;
+	left: 0;
+	z-index: 1;
+	background: var(--paper);
+	box-shadow: 1px 0 0 var(--line), 5px 0 9px -5px rgba(15, 40, 90, 0.1);
+}
+
+th:first-child {
+	z-index: 2;
+	background: var(--quote-bg);
+}
+
+tbody tr:nth-child(even) td:first-child {
+	background: var(--quote-bg);
 }
 
 pre,
