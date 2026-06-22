@@ -2465,6 +2465,8 @@ class ReadableHtmlSettingTab extends PluginSettingTab {
 const CLEAN_HTML_CSS = `
 :root {
 	color-scheme: light dark;
+	--read-width: 720px;
+	--page-width: min(100%, calc(var(--read-width) + 140px));
 	--page-bg: #f4f5f6;
 	--paper: #ffffff;
 	--ink: #181819;
@@ -2535,14 +2537,15 @@ body {
 }
 
 .page {
-	width: min(100%, 860px);
+	position: relative;
+	width: var(--page-width);
 	margin: 0 auto;
 	padding: 2.8rem 1.6rem 5rem;
 }
 
 .article-hero {
 	width: 100%;
-	max-width: 720px;
+	max-width: var(--read-width);
 	margin: 0 auto 2.4rem;
 	padding: 1.4rem 0 2rem;
 	text-align: center;
@@ -2551,7 +2554,7 @@ body {
 }
 
 .article-hero h1 {
-	max-width: 720px;
+	max-width: var(--read-width);
 	margin: 0 auto;
 	color: var(--ink);
 	font-size: 2.25rem;
@@ -2566,7 +2569,7 @@ body {
 }
 
 .article-deck {
-	max-width: 680px;
+	max-width: calc(var(--read-width) - 40px);
 	margin: 0.95rem auto 0;
 	color: var(--muted);
 	font-size: 1rem;
@@ -2591,7 +2594,7 @@ body {
 }
 
 .table-of-contents {
-	max-width: 720px;
+	max-width: var(--read-width);
 	margin: 0 auto 3.2rem;
 	padding: 1.35rem 1.45rem 1.25rem;
 	border: 1px solid var(--line);
@@ -2724,7 +2727,7 @@ body {
 .article-body {
 	counter-reset: section;
 	width: 100%;
-	max-width: 720px;
+	max-width: var(--read-width);
 	margin: 0 auto;
 	font-size: 1rem;
 }
@@ -3001,7 +3004,7 @@ sup {
 		display: block;
 		position: fixed;
 		top: 4.6rem;
-		right: max(1.2rem, calc((100vw - 860px) / 2 - 14.8rem));
+		right: max(1.2rem, calc((100vw - var(--page-width)) / 2 - 14.8rem));
 		width: 13rem;
 		max-height: calc(100vh - 6rem);
 		padding: 0.85rem 0.95rem;
