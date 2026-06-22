@@ -35,7 +35,8 @@
 ![导出前后对比：Markdown 到语音伴读阅读页](assets/before-after-read-along.png)
 <img width="1798" height="1099" alt="8a4af7e976cdfc7cd0f234bacaa57c2e" src="https://github.com/user-attachments/assets/aa2ca781-7e71-4764-bc80-1d309e33d143" />
 <img width="1897" height="1191" alt="03b4b39d6ff89db71e89eb0771a497ac" src="https://github.com/user-attachments/assets/09553f27-b45b-446a-a42a-ac104880da55" />
-<img width="2466" height="1532" alt="image" src="https://github.com/user-attachments/assets/4e223187-ad91-4112-9f2d-3525cab2bc4b" />
+<img width="2449" height="1535" alt="image" src="https://github.com/user-attachments/assets/9d717575-9a44-455b-a889-c65997644afc" />
+
 
 
 
