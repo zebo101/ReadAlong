@@ -2745,8 +2745,8 @@ body {
 	height: 3rem;
 	margin-top: -1.5rem;
 	border-radius: 999px;
-	background: var(--paper);
-	box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.06), 0 2px 7px rgba(15, 23, 42, 0.28);
+	background: var(--page-bg);
+	box-shadow: 0 0 0 1px rgba(128, 128, 128, 0.22), 0 2px 8px rgba(15, 23, 42, 0.3);
 	opacity: 0;
 	transition: opacity 0.25s ease, height 0.18s ease, box-shadow 0.18s ease;
 }
@@ -2758,7 +2758,7 @@ body {
 .width-handle:hover::before {
 	height: 3.6rem;
 	margin-top: -1.8rem;
-	box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.12), 0 3px 11px rgba(15, 23, 42, 0.36);
+	box-shadow: 0 0 0 1px rgba(128, 128, 128, 0.35), 0 3px 12px rgba(15, 23, 42, 0.4);
 }
 
 @media (max-width: 900px) {
@@ -3463,15 +3463,17 @@ const WIDTH_ADJUST_JS = `
 			apply(cur() + (d > 0 ? STEP : -STEP), true);
 		}, { passive: false });
 		window.addEventListener("resize", function() { apply(cur(), false); });
-		// Hide the handle while the user is actively scrolling (reading); bring it
-		// back shortly after scrolling stops. Visible by default when at rest.
-		var showTimer = null;
+		// Hide the handle when scrolling down (reading); show it when scrolling up.
+		var lastY = window.pageYOffset || 0;
 		function onScroll() {
-			handle.classList.remove("is-visible");
-			if (showTimer) clearTimeout(showTimer);
-			showTimer = setTimeout(function() {
+			var y = window.pageYOffset || 0;
+			if (y > lastY + 4) {
+				handle.classList.remove("is-visible");
+				lastY = y;
+			} else if (y < lastY - 4) {
 				handle.classList.add("is-visible");
-			}, 500);
+				lastY = y;
+			}
 		}
 		window.addEventListener("scroll", onScroll, { passive: true });
 		handle.classList.add("is-visible");
