@@ -714,6 +714,7 @@ export default class ReadableHtmlExporterPlugin extends Plugin {
 			"</main>",
 			ttsPlayerHtml,
 			ttsScript,
+			`<script>${WIDTH_ADJUST_JS}</script>`,
 			"</body>",
 			"</html>"
 			].filter(Boolean).join("\n")
@@ -3410,6 +3411,53 @@ body.tts-playing .article-body .tts-s.tts-active strong {
 	}
 }
 `.trim();
+
+const WIDTH_ADJUST_JS = `
+(function() {
+	var MIN = 600, DEF = 720, STEP = 40, KEY = "notes-to-html-pages:read-width";
+	var root = document.documentElement;
+	function maxW() { return Math.min(window.innerWidth - 64, 1400); }
+	function clamp(px) { return Math.max(MIN, Math.min(maxW(), px)); }
+	function cur() {
+		var v = parseInt(getComputedStyle(root).getPropertyValue("--read-width"), 10);
+		return isNaN(v) ? DEF : v;
+	}
+	function apply(px, persist) {
+		px = clamp(px);
+		root.style.setProperty("--read-width", px + "px");
+		if (persist) { try { localStorage.setItem(KEY, String(px)); } catch (e) {} }
+	}
+	try { var saved = localStorage.getItem(KEY); if (saved) apply(parseInt(saved, 10), false); } catch (e) {}
+	document.addEventListener("DOMContentLoaded", function() {
+		var handle = document.querySelector(".width-handle");
+		if (!handle) return;
+		var dragging = false, startX = 0, startW = 0;
+		handle.addEventListener("pointerdown", function(e) {
+			dragging = true; startX = e.clientX; startW = cur();
+			try { handle.setPointerCapture(e.pointerId); } catch (_) {}
+			e.preventDefault();
+		});
+		handle.addEventListener("pointermove", function(e) {
+			if (!dragging) return;
+			apply(startW + 2 * (e.clientX - startX), false);
+		});
+		function end(e) {
+			if (!dragging) return;
+			dragging = false;
+			try { handle.releasePointerCapture(e.pointerId); } catch (_) {}
+			apply(cur(), true);
+		}
+		handle.addEventListener("pointerup", end);
+		handle.addEventListener("pointercancel", end);
+		handle.addEventListener("wheel", function(e) {
+			var d = Math.abs(e.deltaX) >= Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+			if (!d) return;
+			e.preventDefault();
+			apply(cur() + (d > 0 ? STEP : -STEP), true);
+		}, { passive: false });
+	});
+})();
+`;
 
 const TTS_PLAYER_JS = `
 (function() {
