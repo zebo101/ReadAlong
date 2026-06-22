@@ -2740,25 +2740,25 @@ body {
 	content: "";
 	position: absolute;
 	top: 50%;
-	right: 0.45rem;
-	width: 2px;
-	height: 2.8rem;
-	margin-top: -1.4rem;
+	right: 0.4rem;
+	width: 4px;
+	height: 3rem;
+	margin-top: -1.5rem;
 	border-radius: 999px;
-	background: var(--muted);
+	background: var(--paper);
+	box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.06), 0 2px 7px rgba(15, 23, 42, 0.28);
 	opacity: 0;
-	transition: opacity 0.3s ease, height 0.18s ease, background 0.18s ease;
+	transition: opacity 0.25s ease, height 0.18s ease, box-shadow 0.18s ease;
 }
 
 .width-handle.is-visible::before {
-	opacity: 0.3;
+	opacity: 1;
 }
 
 .width-handle:hover::before {
-	background: var(--accent);
-	opacity: 0.75;
 	height: 3.6rem;
 	margin-top: -1.8rem;
+	box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.12), 0 3px 11px rgba(15, 23, 42, 0.36);
 }
 
 @media (max-width: 900px) {
@@ -3463,17 +3463,18 @@ const WIDTH_ADJUST_JS = `
 			apply(cur() + (d > 0 ? STEP : -STEP), true);
 		}, { passive: false });
 		window.addEventListener("resize", function() { apply(cur(), false); });
-		var hideTimer = null;
-		function reveal() {
-			handle.classList.add("is-visible");
-			if (hideTimer) clearTimeout(hideTimer);
-			hideTimer = setTimeout(function() {
-				if (!dragging) handle.classList.remove("is-visible");
-			}, 1500);
+		// Hide the handle while the user is actively scrolling (reading); bring it
+		// back shortly after scrolling stops. Visible by default when at rest.
+		var showTimer = null;
+		function onScroll() {
+			handle.classList.remove("is-visible");
+			if (showTimer) clearTimeout(showTimer);
+			showTimer = setTimeout(function() {
+				handle.classList.add("is-visible");
+			}, 500);
 		}
-		window.addEventListener("scroll", reveal, { passive: true });
-		document.addEventListener("mousemove", reveal, { passive: true });
-		reveal();
+		window.addEventListener("scroll", onScroll, { passive: true });
+		handle.classList.add("is-visible");
 	});
 })();
 `;
