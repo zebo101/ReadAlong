@@ -33,11 +33,10 @@
 ## 效果预览
 
 ![导出前后对比：Markdown 到语音伴读阅读页](assets/before-after-read-along.png)
+<img width="1798" height="1099" alt="8a4af7e976cdfc7cd0f234bacaa57c2e" src="https://github.com/user-attachments/assets/aa2ca781-7e71-4764-bc80-1d309e33d143" />
+<img width="1897" height="1191" alt="03b4b39d6ff89db71e89eb0771a497ac" src="https://github.com/user-attachments/assets/09553f27-b45b-446a-a42a-ac104880da55" />
 
-<img width="1897" height="1191" alt="03b4b39d6ff89db71e89eb0771a497ac" src="https://github.com/user-attachments/assets/30be153f-3bf9-428a-b0d5-edab0f43696c" />
-<img width="2165" height="1272" alt="30d21ca54bb7fd4a5f11d5a1f9d9b19d" src="https://github.com/user-attachments/assets/e6d01dcd-b6d7-4c80-ab0a-a0b50aa63d58" />
 
-![句子高亮与表格效果](assets/highlight-table.png)
 
 ## 功能特性
 
