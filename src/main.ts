@@ -2746,8 +2746,12 @@ body {
 	margin-top: -1.4rem;
 	border-radius: 999px;
 	background: var(--muted);
+	opacity: 0;
+	transition: opacity 0.3s ease, height 0.18s ease, background 0.18s ease;
+}
+
+.width-handle.is-visible::before {
 	opacity: 0.3;
-	transition: opacity 0.18s ease, height 0.18s ease, background 0.18s ease;
 }
 
 .width-handle:hover::before {
@@ -3459,6 +3463,17 @@ const WIDTH_ADJUST_JS = `
 			apply(cur() + (d > 0 ? STEP : -STEP), true);
 		}, { passive: false });
 		window.addEventListener("resize", function() { apply(cur(), false); });
+		var hideTimer = null;
+		function reveal() {
+			handle.classList.add("is-visible");
+			if (hideTimer) clearTimeout(hideTimer);
+			hideTimer = setTimeout(function() {
+				if (!dragging) handle.classList.remove("is-visible");
+			}, 1500);
+		}
+		window.addEventListener("scroll", reveal, { passive: true });
+		document.addEventListener("mousemove", reveal, { passive: true });
+		reveal();
 	});
 })();
 `;
