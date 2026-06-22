@@ -2741,17 +2741,19 @@ body {
 	position: absolute;
 	top: 50%;
 	right: 0.4rem;
-	width: 3px;
-	height: 2.4rem;
-	margin-top: -1.2rem;
+	width: 4px;
+	height: 3.2rem;
+	margin-top: -1.6rem;
 	border-radius: 999px;
 	background: var(--accent);
-	opacity: 0;
-	transition: opacity 0.18s ease;
+	opacity: 0.35;
+	transition: opacity 0.18s ease, height 0.18s ease;
 }
 
 .width-handle:hover::before {
-	opacity: 0.7;
+	opacity: 0.9;
+	height: 4rem;
+	margin-top: -2rem;
 }
 
 @media (max-width: 900px) {
